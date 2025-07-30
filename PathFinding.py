@@ -6,7 +6,7 @@ import MapGenerator
 
 # You can ignore all code here up until line 39.
 
-source_path_1 = "Mars/MarsAdjaListLR100N20.csv" # Source Path for the Adjacency List
+source_path_1 = "Mars/MarsAdjaListLR100.csv" # Source Path for the Adjacency List
 source_path_2 = "Mars/MarsPolarLR100.csv" # Source Path for Polar Coordinates
 
 # The starting and ending points are stored in arrays of size 2.
@@ -50,14 +50,15 @@ adjalist = np.loadtxt(source_path_1, delimiter=",", dtype=np.int32)
 '''
 
 def AStar(): # Evan
-    next = [math.inf] * num_points
+    gs = [0] * num_points
+    fs = [math.inf] * num_points
     prev = [-1] * num_points
     visited = [False] * num_points
 
     pq = [(0, starting_index)]
 
     while pq:
-        current_dist, u = heapq.heappop(pq)
+        _, u = heapq.heappop(pq)
         if visited[u]:
             continue
         visited[u] = True
@@ -69,9 +70,11 @@ def AStar(): # Evan
         for i in range(0, len(adjalist[u]), 2):
             v = neighbors[i]
             w = neighbors[i + 1]
-            f = current_dist + w + heuristic(to_cartesian(pol_coords[v]), to_cartesian(pol_coords[ending_index]))
-            if f < next[v]:
-                next[v] = current_dist + w
+            g = w + gs[u]
+            f = g + heuristic(to_cartesian(pol_coords[v]), to_cartesian(pol_coords[ending_index]))
+            if f < fs[v]:
+                gs[v] = g
+                fs[v] = f
                 prev[v] = u
                 heapq.heappush(pq, (f, v))
     print("Done pathfinding!")
@@ -133,4 +136,6 @@ def Dijkstras(): # Sam
     return path
 
 MapGenerator.MapGen(AStar())
+MapGenerator.MapGen(Dijkstras())
+
 print("Done!")
