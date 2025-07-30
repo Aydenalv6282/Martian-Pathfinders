@@ -1,6 +1,8 @@
 import numpy as np
 import gc
 import math
+import heapq
+import MapGenerator
 
 # You can ignore all code here up until line 39.
 
@@ -20,6 +22,8 @@ min_ending_distance = np.inf
 pol_coords = np.loadtxt(source_path_2, delimiter=",", dtype=np.float64)
 num_points = len(pol_coords)
 for i in range(num_points):
+    if i % 100000 == 0:
+        print(i/num_points)
     check_coords = np.array([pol_coords[i][0], pol_coords[i][1]])
     new_start_distance = np.linalg.norm(check_coords - starting_point)
     new_end_distance = np.linalg.norm(check_coords - ending_point)
@@ -31,8 +35,6 @@ for i in range(num_points):
         min_ending_distance = new_end_distance
 
 print(starting_index, ending_index)
-del pol_coords
-gc.collect()
 
 adjalist = np.loadtxt(source_path_1, delimiter=",", dtype=np.int32)
 
@@ -54,5 +56,38 @@ def jumpPoint(): # Ayden
     pass
 
 def Dijkstras(): # Sam
-    pass
+    next = [math.inf] * num_points
+    prev = [-1] * num_points
+    visited = [False] * num_points
 
+    pq = [(0, starting_index)]
+
+    while pq:
+        current_dist, u = heapq.heappop(pq)
+        if visited[u]:
+            continue
+        visited[u] = True
+
+        if u == ending_index:
+            break
+
+        neighbors = adjalist[u]
+        for i in range(0, 8, 2):
+            v = neighbors[i]
+            w = neighbors[i + 1]
+            if current_dist + w < next[v]:
+                next[v] = current_dist + w
+                prev[v] = u
+                heapq.heappush(pq, (current_dist + w, v))
+    print("Done pathfinding!")
+    path = []
+    node = ending_index
+    while node != starting_index:
+       path.append((pol_coords[node][0], pol_coords[node][1]))
+       node = prev[node]
+    path.append((pol_coords[starting_index][0], pol_coords[starting_index][1]))
+
+    return path
+
+MapGenerator.MapGen(Dijkstras())
+print("Done!")
