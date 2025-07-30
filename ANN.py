@@ -6,9 +6,9 @@ import numpy as np
 import csv
 import gc
 
-source_path = "Mars/MarsCartesian.csv"
-result_path = "Mars/MarsAdjaList.csv"
-neighbor_count = 5
+source_path = "Mars/MarsCartesianLR100.csv"
+result_path = "Mars/MarsAdjaListLR100N100.csv"
+neighbor_count = 20
 
 cart_coords = np.loadtxt(source_path, delimiter=",", dtype=np.int32)
 print("Loaded cart_coords")
@@ -27,3 +27,5 @@ with open(result_path, "w", newline="") as mdata:
             line.append(indices[i][n])
             line.append(int(distances[i][n]))
         writer.writerow(line)
+        if i % 100000 == 0:
+            print(i/len(distances))

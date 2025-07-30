@@ -6,7 +6,7 @@ import MapGenerator
 
 # You can ignore all code here up until line 39.
 
-source_path_1 = "Mars/MarsAdjaListLR100.csv" # Source Path for the Adjacency List
+source_path_1 = "Mars/MarsAdjaListLR100N20.csv" # Source Path for the Adjacency List
 source_path_2 = "Mars/MarsPolarLR100.csv" # Source Path for Polar Coordinates
 
 # The starting and ending points are stored in arrays of size 2.
@@ -72,7 +72,7 @@ def Dijkstras(): # Sam
             break
 
         neighbors = adjalist[u]
-        for i in range(0, 8, 2):
+        for i in range(0, len(adjalist[u]), 2):
             v = neighbors[i]
             w = neighbors[i + 1]
             if current_dist + w < next[v]:

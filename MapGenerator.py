@@ -23,7 +23,7 @@ def MapGen(LLC):
     x_coords, y_coords = zip(*path)
     plt.figure(figsize=(8, 4))
     plt.imshow(mars)
-    plt.scatter(x_coords, y_coords, color='red', s=0.1)  # Draw path
+    plt.plot(x_coords, y_coords, color='red', linewidth=1)  # Draw path
     plt.axis('off')
     plt.tight_layout()
     plt.show()
