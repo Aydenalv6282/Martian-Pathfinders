@@ -69,7 +69,7 @@ def AStar(): # Evan
         for i in range(0, len(adjalist[u]), 2):
             v = neighbors[i]
             w = neighbors[i + 1]
-            f = current_dist + w + heuristic(to_cartesian(pol_coords[u]))
+            f = current_dist + w + heuristic(to_cartesian(pol_coords[v]), to_cartesian(pol_coords[ending_index]))
             if f < next[v]:
                 next[v] = current_dist + w
                 prev[v] = u
@@ -93,7 +93,7 @@ def to_cartesian(line):
     return (x,y,z)
 def heuristic(n1,n2):
     # sqrt( (x2-x1)^2+(y2-1)^2 +())
-    return math.sqrt( (n2[0]-n1[0])**2 + (n2[1]-n1[2])**2 + (n2[2]-n1[2])**2)
+    return math.sqrt((n2[0]-n1[0])**2 + (n2[1]-n1[1])**2 + (n2[2]-n1[2])**2)
 
 def jumpPoint(): # Ayden
     pass
