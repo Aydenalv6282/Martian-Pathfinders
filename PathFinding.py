@@ -6,8 +6,9 @@ import MapGenerator
 
 # You can ignore all code here up until line 39.
 
-source_path_1 = "Mars/MarsAdjaListLR100.csv" # Source Path for the Adjacency List
+source_path_1 = "Mars/MarsAdjaListLR100N100.csv" # Source Path for the Adjacency List
 source_path_2 = "Mars/MarsPolarLR100.csv" # Source Path for Polar Coordinates
+source_path_3 = "Mars/MarsCartesianLR100.csv"
 
 # The starting and ending points are stored in arrays of size 2.
 # We look through the polar coordinates and save the closest pair of coordinates.
@@ -20,6 +21,7 @@ ending_index = 0
 min_ending_distance = np.inf
 
 pol_coords = np.loadtxt(source_path_2, delimiter=",", dtype=np.float64)
+car_coords = np.loadtxt(source_path_3, delimiter=",", dtype=np.int32)
 num_points = len(pol_coords)
 for i in range(num_points):
     if i % 100000 == 0:
@@ -71,7 +73,7 @@ def AStar(): # Evan
             v = neighbors[i]
             w = neighbors[i + 1]
             g = w + gs[u]
-            f = g + heuristic(to_cartesian(pol_coords[v]), to_cartesian(pol_coords[ending_index]))
+            f = g + np.linalg.norm(car_coords[v] - car_coords[ending_index])
             if f < fs[v]:
                 gs[v] = g
                 fs[v] = f
@@ -86,14 +88,17 @@ def AStar(): # Evan
     path.append((pol_coords[starting_index][0], pol_coords[starting_index][1]))
 
     return path
+
+
 def to_cartesian(line):
-    rho = float(line[2])
-    lon = np.deg2rad(float(line[0]))
-    lat = np.deg2rad(float(line[1]))
-    x = int(rho * np.cos(lat) * np.sin(lon))
-    y = int(rho * np.sin(lat) * np.sin(lon))
-    z = int(rho * np.cos(lon))
-    return (x,y,z)
+    rho = line[2]
+    lon = np.deg2rad(line[0])
+    lat = np.deg2rad(line[1])
+    x = rho * np.cos(lat) * np.sin(lon)
+    y = rho * np.sin(lat) * np.sin(lon)
+    z = rho * np.cos(lon)
+    return x,y,z
+
 def heuristic(n1,n2):
     # sqrt( (x2-x1)^2+(y2-1)^2 +())
     return math.sqrt((n2[0]-n1[0])**2 + (n2[1]-n1[1])**2 + (n2[2]-n1[2])**2)
@@ -135,7 +140,9 @@ def Dijkstras(): # Sam
 
     return path
 
+print("Starting Astar!")
 MapGenerator.MapGen(AStar())
+print("Starting Dijkstras!")
 MapGenerator.MapGen(Dijkstras())
 
 print("Done!")
