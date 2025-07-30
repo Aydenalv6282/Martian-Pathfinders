@@ -19,7 +19,7 @@ def MapGen(LLC):
         path.append(cartesian(i,width,height))
 
     x_coords, y_coords = zip(*path)
-    plt.figure(figsize=(8, 8))
+    plt.figure(figsize=(8, 4))
     plt.imshow(mars)
     plt.plot(x_coords, y_coords, color='red', linewidth=1)  # Draw path
     plt.scatter(x_coords, y_coords, color='yellow', s=20)
@@ -28,5 +28,5 @@ def MapGen(LLC):
     plt.show()
 
 
-polar_coords = [(0,180)]
+polar_coords = [(180,0),(90,0),(360,0),(-90,0),(180,0)]
 MapGen(polar_coords)
