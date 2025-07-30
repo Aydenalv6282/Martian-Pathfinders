@@ -50,7 +50,50 @@ adjalist = np.loadtxt(source_path_1, delimiter=",", dtype=np.int32)
 '''
 
 def AStar(): # Evan
-    pass
+    next = [math.inf] * num_points
+    prev = [-1] * num_points
+    visited = [False] * num_points
+
+    pq = [(0, starting_index)]
+
+    while pq:
+        current_dist, u = heapq.heappop(pq)
+        if visited[u]:
+            continue
+        visited[u] = True
+
+        if u == ending_index:
+            break
+
+        neighbors = adjalist[u]
+        for i in range(0, len(adjalist[u]), 2):
+            v = neighbors[i]
+            w = neighbors[i + 1]
+            f = current_dist + w + heuristic(to_cartesian(pol_coords[u]))
+            if f < next[v]:
+                next[v] = current_dist + w
+                prev[v] = u
+                heapq.heappush(pq, (f, v))
+    print("Done pathfinding!")
+    path = []
+    node = ending_index
+    while node != starting_index:
+        path.append((pol_coords[node][0], pol_coords[node][1]))
+        node = prev[node]
+    path.append((pol_coords[starting_index][0], pol_coords[starting_index][1]))
+
+    return path
+def to_cartesian(line):
+    rho = float(line[2])
+    lon = np.deg2rad(float(line[0]))
+    lat = np.deg2rad(float(line[1]))
+    x = int(rho * np.cos(lat) * np.sin(lon))
+    y = int(rho * np.sin(lat) * np.sin(lon))
+    z = int(rho * np.cos(lon))
+    return (x,y,z)
+def heuristic(n1,n2):
+    # sqrt( (x2-x1)^2+(y2-1)^2 +())
+    return math.sqrt( (n2[0]-n1[0])**2 + (n2[1]-n1[2])**2 + (n2[2]-n1[2])**2)
 
 def jumpPoint(): # Ayden
     pass
@@ -89,5 +132,5 @@ def Dijkstras(): # Sam
 
     return path
 
-MapGenerator.MapGen(Dijkstras())
+MapGenerator.MapGen(AStar())
 print("Done!")
