@@ -4,10 +4,11 @@ import numpy as np
 import math
 
 # This function just converts polar coords (in tuple form) to cartesian
-def cartesian(polar,width,height):
-    x = width/2*math.cos(np.deg2rad(polar[1]))*math.cos(np.deg2rad(polar[0]))+width/2
-    y = height/2*math.cos(np.deg2rad(polar[1]))*math.sin(np.deg2rad(polar[0]))+height/2
-    return (x,y)
+def cartesian(polar, width, height):
+    lon, lat = polar
+    x = (lon + 180) * (width / 360)
+    y = (90 - lat) * (height / 180)
+    return (x, y)
 # This function will take in a vector of coordinate tuples and create an image
 # with the given path
 # Mars map is 1440 720
@@ -28,5 +29,5 @@ def MapGen(LLC):
     plt.show()
 
 
-polar_coords = [(180,0),(90,0),(360,0),(-90,0),(180,0)]
+polar_coords = [(-180,0),(0,90),(180,0),(0,-90),(-180,0)]
 MapGen(polar_coords)
