@@ -74,15 +74,10 @@ def manhattan(v):
 
 def haversine(v):
     R = 3389000.0
-    lat1 = np.deg2rad(pol_coords[v][1])
-    lon1 = np.deg2rad(pol_coords[v][0])
-    lat2 = np.deg2rad(pol_coords[ending_index][1])
-    lon2 = np.deg2rad(pol_coords[ending_index][0])
 
-    dlon = abs(lon1-lon2)
-    dlat = abs(lat1-lat2)
-    dsigma = np.arccos(np.sin(lat1)*np.sin(lat2)+np.cos(lat1)*np.cos(lat2)*np.cos(dlon))
-    return R*dsigma
+    chord = euclidean(v)
+    dsigma = 2*np.arcsin(chord/(2*R))
+    return R * dsigma
 
 def lazy_harversine(v):
     R = 3389000.0
@@ -179,7 +174,7 @@ def Dijkstras(): # Sam
     return path
 
 print("Starting Astar!")
-MapGenerator.MapGen(AStar(lazy_haversine))
+MapGenerator.MapGen(AStar(haversine))
 print("Starting Dijkstras!")
 MapGenerator.MapGen(Dijkstras())
 

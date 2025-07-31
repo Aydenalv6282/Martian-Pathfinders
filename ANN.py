@@ -6,8 +6,8 @@ import numpy as np
 import csv
 import gc
 
-source_path = "Mars/MarsCartesianLR100.csv"
-result_path = "Mars/MarsAdjaListLR100N100.csv"
+source_path = "Mars/MarsCartesianLR10.csv"
+result_path = "Mars/MarsAdjaListLR10N20.csv"
 neighbor_count = 20
 
 cart_coords = np.loadtxt(source_path, delimiter=",", dtype=np.int32)
