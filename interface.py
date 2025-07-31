@@ -86,25 +86,36 @@ while prompt_state:
             if lon_from_active:
                 if event.key == pygame.K_BACKSPACE:
                     lon_from_text = lon_from_text[:-1]
+                elif event.key == pygame.K_RETURN:
+                    lon_from_active = False
+                    lat_from_active = True
                 else:
                     lon_from_text += event.unicode
 
-            if lat_from_active:
+            elif lat_from_active:
                 if event.key == pygame.K_BACKSPACE:
                     lat_from_text = lat_from_text[:-1]
+                elif event.key == pygame.K_RETURN:
+                    lat_from_active = False
+                    lon_to_active = True
                 else:
                     lat_from_text += event.unicode
 
             # To type in to coords
-            if lon_to_active:
+            elif lon_to_active:
                 if event.key == pygame.K_BACKSPACE:
                     lon_to_text = lon_to_text[:-1]
+                elif event.key == pygame.K_RETURN:
+                    lon_to_active = False
+                    lat_to_active = True
                 else:
                     lon_to_text += event.unicode
 
-            if lat_to_active:
+            elif lat_to_active:
                 if event.key == pygame.K_BACKSPACE:
-                    lat_to_text = lat_from_text[:-1]
+                    lat_to_text = lat_to_text[:-1]
+                elif event.key == pygame.K_RETURN:
+                    lat_to_active = False
                 else:
                     lat_to_text += event.unicode
 
