@@ -26,4 +26,4 @@ def MapGen(LLC):
     plt.plot(x_coords, y_coords, color='red', linewidth=1)  # Draw path
     plt.axis('off')
     plt.tight_layout()
-    plt.show()
+    plt.savefig("output/mars_path.png", dpi=180)
