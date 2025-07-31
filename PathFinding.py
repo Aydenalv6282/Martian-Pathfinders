@@ -6,7 +6,7 @@ import MapGenerator
 
 # You can ignore all code here up until line 39.
 
-source_path_1 = "Mars/MarsAdjaListLR100N100.csv" # Source Path for the Adjacency List
+source_path_1 = "Mars/MarsAdjaListLR100N20.csv" # Source Path for the Adjacency List
 source_path_2 = "Mars/MarsPolarLR100.csv" # Source Path for Polar Coordinates
 source_path_3 = "Mars/MarsCartesianLR100.csv"
 
@@ -20,12 +20,15 @@ min_starting_distance = np.inf
 ending_index = 0
 min_ending_distance = np.inf
 
+adjalist = np.loadtxt(source_path_1, delimiter=",", dtype=np.int32)
 pol_coords = np.loadtxt(source_path_2, delimiter=",", dtype=np.float64)
 car_coords = np.loadtxt(source_path_3, delimiter=",", dtype=np.int32)
 num_points = len(pol_coords)
 for i in range(num_points):
-    if i % 100000 == 0:
+    if i % 1000000 == 0:
         print(i/num_points)
+    #if (int(starting_point[0]) != int(pol_coords[i][0]) or int(starting_point[1]) != int(pol_coords[i][1])) and (int(ending_point[0]) != int(pol_coords[i][0]) or int(ending_point[1]) != int(pol_coords[i][1])):
+    #    continue
     check_coords = np.array([pol_coords[i][0], pol_coords[i][1]])
     new_start_distance = np.linalg.norm(check_coords - starting_point)
     new_end_distance = np.linalg.norm(check_coords - ending_point)
@@ -38,7 +41,6 @@ for i in range(num_points):
 
 print(starting_index, ending_index)
 
-adjalist = np.loadtxt(source_path_1, delimiter=",", dtype=np.int32)
 
 '''
 - When the pathfinding is done, write a list of all the indexes of the coordinates visited in order to a file.
@@ -51,7 +53,62 @@ adjalist = np.loadtxt(source_path_1, delimiter=",", dtype=np.int32)
   the file later in the project to add that in with no modifications to the pathfinding.
 '''
 
-def AStar(): # Evan
+# Heuristics
+
+def euclidean(v):
+    return np.linalg.norm(car_coords[v] - car_coords[ending_index])
+
+def euclidean2(v):
+    return np.linalg.norm(car_coords[v] - car_coords[ending_index])*1.4
+
+def lazy_haversine(v):
+    R = 3389000.0
+    eu_dist = euclidean(v)
+    return eu_dist + eu_dist**3/(24*(R**2))
+
+def manhattan(v):
+    xdif = abs(car_coords[v][0] - car_coords[ending_index][0])
+    ydif = abs(car_coords[v][1] - car_coords[ending_index][1])
+    zdif = abs(car_coords[v][2] - car_coords[ending_index][2])
+    return xdif+ydif+zdif
+
+def haversine(v):
+    R = 3389000.0
+    lat1 = np.deg2rad(pol_coords[v][1])
+    lon1 = np.deg2rad(pol_coords[v][0])
+    lat2 = np.deg2rad(pol_coords[ending_index][1])
+    lon2 = np.deg2rad(pol_coords[ending_index][0])
+
+    dlon = abs(lon1-lon2)
+    dlat = abs(lat1-lat2)
+    dsigma = np.arccos(np.sin(lat1)*np.sin(lat2)+np.cos(lat1)*np.cos(lat2)*np.cos(dlon))
+    return R*dsigma
+
+def lazy_harversine(v):
+    R = 3389000.0
+    lat1 = np.deg2rad(pol_coords[v][1])
+    lon1 = np.deg2rad(pol_coords[v][0])
+    lat2 = np.deg2rad(pol_coords[ending_index][1])
+    lon2 = np.deg2rad(pol_coords[ending_index][0])
+
+    dlon = abs(lon1-lon2)
+    dlat = abs(lat1-lat2)
+
+
+# Reference: https://stackoverflow.com/questions/53116475/calculating-diagonal-distance-in-3-dimensions-for-a-path-finding-heuristic
+def diagnal(v):
+    D1 = 1
+    D2 = 1.41
+    D3 = 1.73
+    xdif = abs(pol_coords[v][0] - pol_coords[ending_index][0])
+    ydif = abs(pol_coords[v][1] - pol_coords[ending_index][1])
+    zdif = abs(pol_coords[v][2] - pol_coords[ending_index][2])
+    min_dist = min(xdif, ydif, zdif)
+    max_dist = max(xdif, ydif, zdif)
+    mid_dist = xdif + ydif + zdif - min_dist - max_dist
+    return (D3-D2)*min_dist + (D2 - D1) * mid_dist + D1 * max_dist
+
+def AStar(heuristic): # Evan
     gs = [0] * num_points
     fs = [math.inf] * num_points
     prev = [-1] * num_points
@@ -73,7 +130,7 @@ def AStar(): # Evan
             v = neighbors[i]
             w = neighbors[i + 1]
             g = w + gs[u]
-            f = g + np.linalg.norm(car_coords[v] - car_coords[ending_index])
+            f = g + heuristic(v)
             if f < fs[v]:
                 gs[v] = g
                 fs[v] = f
@@ -86,25 +143,7 @@ def AStar(): # Evan
         path.append((pol_coords[node][0], pol_coords[node][1]))
         node = prev[node]
     path.append((pol_coords[starting_index][0], pol_coords[starting_index][1]))
-
     return path
-
-
-def to_cartesian(line):
-    rho = line[2]
-    lon = np.deg2rad(line[0])
-    lat = np.deg2rad(line[1])
-    x = rho * np.cos(lat) * np.sin(lon)
-    y = rho * np.sin(lat) * np.sin(lon)
-    z = rho * np.cos(lon)
-    return x,y,z
-
-def heuristic(n1,n2):
-    # sqrt( (x2-x1)^2+(y2-1)^2 +())
-    return math.sqrt((n2[0]-n1[0])**2 + (n2[1]-n1[1])**2 + (n2[2]-n1[2])**2)
-
-def jumpPoint(): # Ayden
-    pass
 
 def Dijkstras(): # Sam
     next = [math.inf] * num_points
@@ -137,11 +176,10 @@ def Dijkstras(): # Sam
        path.append((pol_coords[node][0], pol_coords[node][1]))
        node = prev[node]
     path.append((pol_coords[starting_index][0], pol_coords[starting_index][1]))
-
     return path
 
 print("Starting Astar!")
-MapGenerator.MapGen(AStar())
+MapGenerator.MapGen(AStar(lazy_haversine))
 print("Starting Dijkstras!")
 MapGenerator.MapGen(Dijkstras())
 
