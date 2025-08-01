@@ -7,8 +7,8 @@ import csv
 # This function just converts polar coords (in tuple form) to cartesian
 def cartesian(polar, width, height):
     lon, lat = polar
-    x = (lon + 180) * (width / 360)
-    y = (90 - lat) * (height / 180)
+    x = (lon + 180) * (width / 360) % width
+    y = (90 - lat) * (height / 180) % height
     return x, y
 # This function will take in a vector of coordinate tuples and create an image
 # with the given path

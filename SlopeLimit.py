@@ -2,16 +2,15 @@ import math
 import csv
 import numpy as np
 
-source_path_1 = "Mars/MarsAdjaListLR100.csv" # Source Path for the Adjacency List
-source_path_2 = "Mars/MarsPolarLR100.csv" # Source Path for Polar Coordinates
-source_path_3 = "Mars/MarsCartesianLR100.csv"
+source_path_1 = "Mars/MarsAdjaListLR10N20.csv" # Source Path for the Adjacency List
+source_path_2 = "Mars/MarsPolarLR10.csv" # Source Path for Polar Coordinates
+source_path_3 = "Mars/MarsCartesianLR10.csv"
 
 # The starting and ending points are stored in arrays of size 2.
 # We look through the polar coordinates and save the closest pair of coordinates.
 
 adjalist = np.loadtxt(source_path_1, delimiter=",", dtype=np.int32)
 pol_coords = np.loadtxt(source_path_2, delimiter=",", dtype=np.float64)
-car_coords = np.loadtxt(source_path_3, delimiter=",", dtype=np.int32)
 num_points = len(pol_coords)
 
 def slope_limit(max_angle=10.0):
@@ -43,8 +42,8 @@ def slope_limit(max_angle=10.0):
                 adjalist[i][u + 1] = -1
             u += 2
 
-    f = "Mars/MarsAdjaListLR100N20S1.csv"
-    with open(f, "w") as file:
+    f = "Mars/MarsAdjaListLR10N20S10.csv"
+    with open(f, "w", newline="") as file:
         writer = csv.writer(file)
         for i in range(len(adjalist)):
             writer.writerow(adjalist[i])

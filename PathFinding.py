@@ -3,6 +3,7 @@ import gc
 import math
 import heapq
 import MapGenerator
+from datetime import datetime
 
 # You can ignore all code here up until line 39.
 
@@ -104,10 +105,13 @@ def diagnal(v):
     return (D3-D2)*min_dist + (D2 - D1) * mid_dist + D1 * max_dist
 
 def AStar(heuristic): # Evan
-    gs = [0] * num_points
-    fs = [math.inf] * num_points
-    prev = [-1] * num_points
-    visited = [False] * num_points
+    current_datetime = datetime.now()
+    current_time = current_datetime.time()
+    print(current_time)
+    gs = np.zeros(num_points, dtype=np.int64)
+    fs = np.full(shape=num_points, fill_value=np.iinfo(np.int64).max, dtype=np.int64)
+    prev = np.full(shape=num_points, fill_value=-1, dtype=np.int64)
+    visited = np.full(shape=num_points, fill_value=0, dtype=np.bool)
 
     pq = [(0, starting_index)]
 
@@ -138,12 +142,18 @@ def AStar(heuristic): # Evan
         path.append((pol_coords[node][0], pol_coords[node][1]))
         node = prev[node]
     path.append((pol_coords[starting_index][0], pol_coords[starting_index][1]))
+    current_datetime = datetime.now()
+    current_time = current_datetime.time()
+    print(current_time)
     return path
 
 def Dijkstras(): # Sam
-    next = [math.inf] * num_points
-    prev = [-1] * num_points
-    visited = [False] * num_points
+    current_datetime = datetime.now()
+    current_time = current_datetime.time()
+    print(current_time)
+    next = np.full(shape=num_points, fill_value=np.iinfo(np.int64).max, dtype=np.int64)
+    prev = np.full(shape=num_points, fill_value=-1, dtype=np.int64)
+    visited = np.full(shape=num_points, fill_value=0, dtype=np.bool)
 
     pq = [(0, starting_index)]
 
@@ -171,10 +181,16 @@ def Dijkstras(): # Sam
        path.append((pol_coords[node][0], pol_coords[node][1]))
        node = prev[node]
     path.append((pol_coords[starting_index][0], pol_coords[starting_index][1]))
+    current_datetime = datetime.now()
+    current_time = current_datetime.time()
+    print(current_time)
     return path
+
+
 
 print("Starting Astar!")
 MapGenerator.MapGen(AStar(haversine))
+
 print("Starting Dijkstras!")
 MapGenerator.MapGen(Dijkstras())
 

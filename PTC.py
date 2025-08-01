@@ -19,6 +19,4 @@ with open(source_path, "r") as mdatap:
             y = int(rho*np.sin(lat)*np.sin(lon))
             z = int(rho*np.cos(lon))
             writer.writerow([x, y, z])
-            if count % 1000000 == 0:
-                print(count/198333333)
             count += 1

@@ -3,7 +3,7 @@
 import csv
 
 source_path = "Mars/MarsPolar.csv"
-source_path_2 = "Mars/MarsPolarND.csv"
+source_path_2 = "Mars/MarsCartesian.csv"
 count_1 = 0
 count_2 = 0
 
