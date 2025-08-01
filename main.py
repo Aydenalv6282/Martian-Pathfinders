@@ -1,8 +1,10 @@
 import pygame
 import numpy as np
+from pygame.examples.cursors import image
+import sys
 import Algos
 import MapGenerator
-from MapGenerator import MapGen
+from MapGenerator import MapGen, PointmapGen
 import PlanetViewer
 from PlanetViewer import planet
 
@@ -60,6 +62,7 @@ while prompt_state:
         if event.type == pygame.QUIT:
             prompt_state = False
             pygame.quit()
+            sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Mouse button interactions
 
@@ -100,6 +103,10 @@ while prompt_state:
         if event.type == pygame.MOUSEBUTTONUP:
             if adjalist_active:
                 starting_point, ending_point = Algos.point_finder(np.array([np.float64(lon_from_text),np.float64(lat_from_text)]),np.array([np.float64(lon_to_text),np.float64(lat_to_text)]),pol_coords)
+                point_index = [(float(lon_from_text),float(lat_from_text)),(float(lon_to_text),float(lat_to_text))]
+                print(point_index)
+                PointmapGen(point_index)
+                b = pygame.image.load("output/mars_index.png")
                 adjalist_active = False
             if start_active:
                 if dijkstra_active:

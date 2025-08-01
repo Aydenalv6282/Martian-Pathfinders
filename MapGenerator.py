@@ -31,3 +31,22 @@ def MapGen(LLC):
     plt.savefig("output/mars_path.png", dpi=dpi, bbox_inches='tight', pad_inches=0)
     plt.close(fig)
 
+def PointmapGen(LLC):
+    path = []
+    mars = Image.open("elements/nasa_mars_map_001.png")
+    width,height = mars.size
+    for i in LLC:
+        path.append(cartesian(i,width,height))
+
+    x_coords, y_coords = zip(*path)
+    dpi = 100
+    fig = plt.figure(figsize=(width / dpi, height / dpi), dpi=dpi)
+    ax = plt.Axes(fig,[0,0,1,1])
+    fig.add_axes(ax)
+    ax.imshow(mars)
+    ax.scatter(x_coords, y_coords, color='red', linewidth=1,edgecolors='black')
+    ax.set_axis_off()
+    plt.savefig("output/mars_index.png", dpi=dpi, bbox_inches='tight', pad_inches=0)
+    plt.close(fig)
+
+PointmapGen([(0,45),(100,45)])
