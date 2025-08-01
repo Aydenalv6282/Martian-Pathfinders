@@ -1,8 +1,8 @@
 import numpy as np
-import gc
 import math
 import heapq
-import MapGenerator
+
+
 
 
 # You can ignore all code here up until line 39.
@@ -53,97 +53,51 @@ def point_finder(starting_point,ending_point,pol_coords):
   the file later in the project to add that in with no modifications to the pathfinding.
 '''
 
-# Heuristics
-#
-# def euclidean(v):
-#     return np.linalg.norm(car_coords[v] - car_coords[ending_index])
-#
-# def euclidean2(v):
-#     return np.linalg.norm(car_coords[v] - car_coords[ending_index])*1.4
-#
-# def lazy_haversine(v):
-#     R = 3389000.0
-#     eu_dist = euclidean(v)
-#     return eu_dist + eu_dist**3/(24*(R**2))
-#
-# def manhattan(v):
-#     xdif = abs(car_coords[v][0] - car_coords[ending_index][0])
-#     ydif = abs(car_coords[v][1] - car_coords[ending_index][1])
-#     zdif = abs(car_coords[v][2] - car_coords[ending_index][2])
-#     return xdif+ydif+zdif
-#
-# def haversine(v):
-#     R = 3389000.0
-#     lat1 = np.deg2rad(pol_coords[v][1])
-#     lon1 = np.deg2rad(pol_coords[v][0])
-#     lat2 = np.deg2rad(pol_coords[ending_index][1])
-#     lon2 = np.deg2rad(pol_coords[ending_index][0])
-#
-#     dlon = abs(lon1-lon2)
-#     dlat = abs(lat1-lat2)
-#     dsigma = np.arccos(np.sin(lat1)*np.sin(lat2)+np.cos(lat1)*np.cos(lat2)*np.cos(dlon))
-#     return R*dsigma
-#
-# def lazy_harversine(v):
-#     R = 3389000.0
-#     lat1 = np.deg2rad(pol_coords[v][1])
-#     lon1 = np.deg2rad(pol_coords[v][0])
-#     lat2 = np.deg2rad(pol_coords[ending_index][1])
-#     lon2 = np.deg2rad(pol_coords[ending_index][0])
-#
-#     dlon = abs(lon1-lon2)
-#     dlat = abs(lat1-lat2)
-#
-#
-# # Reference: https://stackoverflow.com/questions/53116475/calculating-diagonal-distance-in-3-dimensions-for-a-path-finding-heuristic
-# def diagnal(v):
-#     D1 = 1
-#     D2 = 1.41
-#     D3 = 1.73
-#     xdif = abs(pol_coords[v][0] - pol_coords[ending_index][0])
-#     ydif = abs(pol_coords[v][1] - pol_coords[ending_index][1])
-#     zdif = abs(pol_coords[v][2] - pol_coords[ending_index][2])
-#     min_dist = min(xdif, ydif, zdif)
-#     max_dist = max(xdif, ydif, zdif)
-#     mid_dist = xdif + ydif + zdif - min_dist - max_dist
-#     return (D3-D2)*min_dist + (D2 - D1) * mid_dist + D1 * max_dist
-#
-# def AStar(heuristic): # Evan
-#     gs = [0] * num_points
-#     fs = [math.inf] * num_points
-#     prev = [-1] * num_points
-#     visited = [False] * num_points
-#
-#     pq = [(0, starting_index)]
-#
-#     while pq:
-#         _, u = heapq.heappop(pq)
-#         if visited[u]:
-#             continue
-#         visited[u] = True
-#
-#         if u == ending_index:
-#             break
-#
-#         neighbors = adjalist[u]
-#         for i in range(0, len(adjalist[u]), 2):
-#             v = neighbors[i]
-#             w = neighbors[i + 1]
-#             g = w + gs[u]
-#             f = g + heuristic(v)
-#             if f < fs[v]:
-#                 gs[v] = g
-#                 fs[v] = f
-#                 prev[v] = u
-#                 heapq.heappush(pq, (f, v))
-#     print("Done pathfinding!")
-#     path = []
-#     node = ending_index
-#     while node != starting_index:
-#         path.append((pol_coords[node][0], pol_coords[node][1]))
-#         node = prev[node]
-#     path.append((pol_coords[starting_index][0], pol_coords[starting_index][1]))
-#     return path
+def euclidean(v,car_coords,ending_index):
+    return np.linalg.norm(car_coords[v] - car_coords[ending_index])
+def haversine(v,car_coords,ending_index):
+    R = 3389000.0
+
+    chord = euclidean(v,car_coords,ending_index)
+    dsigma = 2*np.arcsin(chord/(2*R))
+    return R * dsigma
+def AStar(starting_index,ending_index,adjalist,pol_coords,car_coords): # Evan
+    num_points = len(pol_coords)
+    gs = np.zeros(num_points, dtype=np.int64)
+    fs = np.full(shape=num_points, fill_value=np.iinfo(np.int64).max, dtype=np.int64)
+    prev = np.full(shape=num_points, fill_value=-1, dtype=np.int64)
+    visited = np.full(shape=num_points, fill_value=0, dtype=np.bool)
+
+    pq = [(0, starting_index)]
+
+    while pq:
+        _, u = heapq.heappop(pq)
+        if visited[u]:
+            continue
+        visited[u] = True
+
+        if u == ending_index:
+            break
+
+        neighbors = adjalist[u]
+        for i in range(0, len(adjalist[u]), 2):
+            v = neighbors[i]
+            w = neighbors[i + 1]
+            g = w + gs[u]
+            f = g + euclidean(v,car_coords,ending_index)
+            if f < fs[v]:
+                gs[v] = g
+                fs[v] = f
+                prev[v] = u
+                heapq.heappush(pq, (f, v))
+    print("Done pathfinding!")
+    path = []
+    node = ending_index
+    while node != starting_index:
+        path.append((pol_coords[node][0], pol_coords[node][1]))
+        node = prev[node]
+    path.append((pol_coords[starting_index][0], pol_coords[starting_index][1]))
+    return path
 
 # Needs to take in starting and ending points, the adjacency list, and the polor coordinates
 def Dijkstras(starting_index,ending_index,adjalist,pol_coords): # Sam

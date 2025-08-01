@@ -3,6 +3,8 @@ import numpy as np
 import Algos
 import MapGenerator
 from MapGenerator import MapGen
+import PlanetViewer
+from PlanetViewer import planet
 
 pygame.init()
 scale = 1
@@ -49,6 +51,7 @@ start_active = False
 
 
 prompt_state = True
+planet_state = False
 
 while prompt_state:
     for event in pygame.event.get():
@@ -101,8 +104,18 @@ while prompt_state:
                 if dijkstra_active:
                     path = Algos.Dijkstras(starting_point,ending_point,adjalist, pol_coords)
                     MapGen(path)
-                    b = pygame.image.load("output/mars_path.png")
+                    #b = pygame.image.load("output/mars_path.png")
+                    dijkstra_active = False
+                    prompt_state = False
+                    planet_state = True
                 start_active = False
+                if astar_active:
+                    path = Algos.AStar(starting_point,ending_point,adjalist, pol_coords, car_coords)
+                    MapGen(path)
+                    b = pygame.image.load("output/mars_path.png")
+                    astar_active = False
+                    prompt_state = False
+                    planet_state = True
         if event.type == pygame.KEYDOWN:
             # User keyboard interactions
 
@@ -212,3 +225,7 @@ while prompt_state:
     screen.blit(astar_surface,(astar_rect.x+5,astar_rect.y+5))
     screen.blit(start_surface,(start_rect.x+5,start_rect.y+5))
     pygame.display.flip()
+
+
+    while planet_state:
+        planet("output/mars_path.png")

@@ -21,9 +21,13 @@ def MapGen(LLC):
         path.append(cartesian(i,width,height))
 
     x_coords, y_coords = zip(*path)
-    plt.figure(figsize=(8, 4))
-    plt.imshow(mars)
-    plt.plot(x_coords, y_coords, color='red', linewidth=1)  # Draw path
-    plt.axis('off')
-    plt.tight_layout()
-    plt.savefig("output/mars_path.png", dpi=180)
+    dpi = 100
+    fig = plt.figure(figsize=(width / dpi, height / dpi), dpi=dpi)
+    ax = plt.Axes(fig,[0,0,1,1])
+    fig.add_axes(ax)
+    ax.imshow(mars)
+    ax.plot(x_coords, y_coords, color='red', linewidth=1)
+    ax.set_axis_off()
+    plt.savefig("output/mars_path.png", dpi=dpi, bbox_inches='tight', pad_inches=0)
+    plt.close(fig)
+
