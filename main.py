@@ -112,7 +112,7 @@ while prompt_state:
                 if dijkstra_active:
                     path = Algos.Dijkstras(starting_point,ending_point,adjalist, pol_coords)
                     MapGen(path)
-                    #b = pygame.image.load("output/mars_path.png")
+                    b = pygame.image.load("output/mars_path.png")
                     dijkstra_active = False
                     prompt_state = False
                     planet_state = True
@@ -122,7 +122,7 @@ while prompt_state:
                     MapGen(path)
                     b = pygame.image.load("output/mars_path.png")
                     astar_active = False
-                    #prompt_state = False
+                    prompt_state = False
                     planet_state = True
         if event.type == pygame.KEYDOWN:
             # User keyboard interactions
