@@ -32,7 +32,7 @@ lat_from_rect = pygame.Rect(230,760,100,32)
 to_txt_rect = pygame.Rect(340,760,40,32)
 lon_to_rect = pygame.Rect(380,760,100,32)
 lat_to_rect = pygame.Rect(490,760,100,32)
-adjalist_rect = pygame.Rect(620,760,150,32)
+adjalist_rect = pygame.Rect(620,760,130,32)
 dijkstra_rect = pygame.Rect(930,760,100,32)
 astar_rect = pygame.Rect(1040,760,100,32)
 start_rect = pygame.Rect(1300,760,70,32)
@@ -52,6 +52,7 @@ start_active = False
 
 prompt_state = True
 planet_state = False
+
 
 while prompt_state:
     for event in pygame.event.get():
@@ -114,7 +115,7 @@ while prompt_state:
                     MapGen(path)
                     b = pygame.image.load("output/mars_path.png")
                     astar_active = False
-                    prompt_state = False
+                    #prompt_state = False
                     planet_state = True
         if event.type == pygame.KEYDOWN:
             # User keyboard interactions
@@ -209,7 +210,7 @@ while prompt_state:
     to_txt_surface = base_font.render("To:",True,(0,0,0))
     lon_to_surface = base_font.render(lon_to_text, True, (0, 0, 0))
     lat_to_surface = base_font.render(lat_to_text, True, (0, 0, 0))
-    adjalist_surface = base_font.render("Create graph",True,(0,0,0))
+    adjalist_surface = base_font.render("Set points",True,(0,0,0))
     dijkstra_surface = base_font.render("Dijkstra",True,(0,0,0))
     astar_surface = base_font.render("Astar",True,(0,0,0))
     start_surface = base_font.render("Start",True,(0,0,0))
@@ -226,6 +227,5 @@ while prompt_state:
     screen.blit(start_surface,(start_rect.x+5,start_rect.y+5))
     pygame.display.flip()
 
-
-    while planet_state:
+    if planet_state:
         planet("output/mars_path.png")
