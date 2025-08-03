@@ -14,7 +14,7 @@ screen_width, screen_height = 1440,820
 screen = pygame.display.set_mode((screen_width, screen_height))
 base_font = pygame.font.Font(None,32)
 b = pygame.image.load("elements/nasa_mars_map_001.png")
-source_path_1 = "Mars/MarsAdjaListLR100.csv" # Source Path for the Adjacency List
+source_path_1 = "Mars/MarsAdjaListLR100N20.csv" # Source Path for the Adjacency List
 source_path_2 = "Mars/MarsPolarLR100.csv" # Source Path for Polar Coordinates
 source_path_3 = "Mars/MarsCartesianLR100.csv" # Source Path for Cartesian Coordinates
 
