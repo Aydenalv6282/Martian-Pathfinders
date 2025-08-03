@@ -1,8 +1,5 @@
 from PIL import Image
 import matplotlib.pyplot as plt
-import numpy as np
-import math
-import csv
 
 # This function just converts polar coords (in tuple form) to cartesian
 def cartesian(polar, width, height):

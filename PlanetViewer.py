@@ -76,8 +76,8 @@ def planet(filename):
             # Rotate with mouse click and drag
             if event.type == pygame.MOUSEMOTION:
                 x, y = event.pos
-                dx = x - lastPosX
-                dy = y - lastPosY
+                dx = (x - lastPosX)/4
+                dy = (y - lastPosY)/4
                 mouseState = pygame.mouse.get_pressed()
                 if mouseState[0]:
 
