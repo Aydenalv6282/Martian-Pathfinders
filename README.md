@@ -28,5 +28,9 @@ After pressing the "Start" button located on the bottom right of your screen, a 
 The center of the map is at 0° longitude. The bottom is -90° latitude, and the top is 90° latitude. The left and right sides are 180°. Note that near the edges and 0° longitude, there are not many data points. So, pathfinding in these areas _will not yield accurate paths._ Loading the entire dataset to get around this is not feasible, as it would likely use more than 64 gigabytes of RAM. Please note, crashes frequently occur for some Mac OS users.
 ## Demonstration Video
 
+### Link
+
+### Notes
+The dataset used in the video contained over 50 million data points (50 million vertices, 1 billion edges). Unfortunately, this is too much data to store online, so the available download has only 5 million points or 100 million edges.
 ## Downloading the Project
 The essential files are MapGenerator.py, main.py, PlanetViewer.py, and Algos.py. Pygame, numpy, PyOpenGL, pillow, and matplotlib are all also required. If you want to run this program in your IDE, simply download the listed files and use pip to install the listed libraries. The dataset used along with the listed files can be found here: https://drive.google.com/file/d/1ZzVTxSKxX_KW3XTG7uKGCKuo5No5QyqI/view?usp=sharing
