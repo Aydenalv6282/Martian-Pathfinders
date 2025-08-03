@@ -1,8 +1,11 @@
 import pygame
 import numpy as np
+from pygame.examples.cursors import image
 import sys
 import Algos
+import MapGenerator
 from MapGenerator import MapGen, PointmapGen
+import PlanetViewer
 from PlanetViewer import planet
 
 
@@ -14,7 +17,7 @@ screen_width, screen_height = 1440,820
 screen = pygame.display.set_mode((screen_width, screen_height))
 base_font = pygame.font.Font(None,32)
 b = pygame.image.load("elements/nasa_mars_map_001.png")
-source_path_1 = "Mars/MarsAdjaListLR100N20.csv" # Source Path for the Adjacency List
+source_path_1 = "Mars/MarsAdjaListLR100.csv" # Source Path for the Adjacency List
 source_path_2 = "Mars/MarsPolarLR100.csv" # Source Path for Polar Coordinates
 source_path_3 = "Mars/MarsCartesianLR100.csv" # Source Path for Cartesian Coordinates
 
@@ -40,7 +43,8 @@ lat_to_rect = pygame.Rect(490,760,100,32)
 adjalist_rect = pygame.Rect(620,760,130,32)
 dijkstra_rect = pygame.Rect(930,760,100,32)
 astar_rect = pygame.Rect(1040,760,100,32)
-start_rect = pygame.Rect(1300,760,70,32)
+start_rect = pygame.Rect(1200,760,70,32)
+viewer_rect = pygame.Rect(1300,760,90,32)
 
 # Button colors
 rect_color_active = pygame.Color("Green")
@@ -55,6 +59,7 @@ dijkstra_active = False
 astar_active = False
 adjalist_active = False
 start_active = False
+viewer_active = False
 
 # Menu states
 prompt_state = True
@@ -109,6 +114,9 @@ while prompt_state:
                 adjalist_active = True
             if start_rect.collidepoint(event.pos):
                 start_active = True
+            if viewer_rect.collidepoint(event.pos):
+                viewer_active = True
+                prompt_state = False
         if event.type == pygame.MOUSEBUTTONUP:
             # Finding the closest points in data set to where user enters
             if adjalist_active:
@@ -127,8 +135,6 @@ while prompt_state:
                     MapGen(path)
                     b = pygame.image.load("output/mars_path.png")# Generates new image with path traversed
                     dijkstra_active = False
-                    prompt_state = False
-                    planet_state = True
                 start_active = False
                 # What happens if Astar is chosen when start
                 if astar_active:
@@ -136,8 +142,6 @@ while prompt_state:
                     MapGen(path)
                     b = pygame.image.load("output/mars_path.png")# Generates new image with path traversed
                     astar_active = False
-                    prompt_state = False
-                    planet_state = True
         if event.type == pygame.KEYDOWN:
             # User keyboard interactions
 
@@ -211,6 +215,10 @@ while prompt_state:
         start_color = rect_color_active
     else:
         start_color = rect_color_passive
+    if viewer_active:
+        viewer_color = rect_color_active
+    else:
+        viewer_color = rect_color_passive
     # Pygame drawing rects
     screen.fill((254, 254, 254))
     pygame.draw.rect(screen,(255,255,255),from_txt_rect)
@@ -223,6 +231,7 @@ while prompt_state:
     pygame.draw.rect(screen,dijkstra_rect_color,dijkstra_rect,2)
     pygame.draw.rect(screen,astar_rect_color,astar_rect,2)
     pygame.draw.rect(screen,start_color,start_rect,2)
+    pygame.draw.rect(screen,viewer_color,viewer_rect,2)
     # Pygame display draw
     screen.blit(b, b.get_rect(topleft=(0, 0)))
 
@@ -237,6 +246,7 @@ while prompt_state:
     dijkstra_surface = base_font.render("Dijkstra",True,(0,0,0))
     astar_surface = base_font.render("Astar",True,(0,0,0))
     start_surface = base_font.render("Start",True,(0,0,0))
+    viewer_surface = base_font.render("Viewer",True,(0,0,0))
 
     # Pygame displays all rect surfaces and formats text within them
     screen.blit(from_txt_surface,(from_txt_rect.x+5,from_txt_rect.y+5))
@@ -249,6 +259,7 @@ while prompt_state:
     screen.blit(dijkstra_surface,(dijkstra_rect.x+5,dijkstra_rect.y+5))
     screen.blit(astar_surface,(astar_rect.x+5,astar_rect.y+5))
     screen.blit(start_surface,(start_rect.x+5,start_rect.y+5))
+    screen.blit(viewer_surface,(viewer_rect.x+5,viewer_rect.y+5))
     pygame.display.flip()
 
     # Displays planet surface with drawn path
