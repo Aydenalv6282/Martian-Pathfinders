@@ -16,32 +16,44 @@ num_points = len(pol_coords)
 def slope_limit(max_angle=10.0):
     removed = 0
     num_nodes = len(adjalist)
+    # iterate over every node in the graph
     for i in range(num_nodes):
         neighbors = adjalist[i]
         neighbor_len = len(neighbors)
         u = 0
+        # radius of current node
         source_rad = pol_coords[i][2]
+        # iterate over neighbor pairs
         while u < neighbor_len:
+            # neighbor node index
             v = neighbors[u]
+            # skip invalid neighbors
             if v < 0 or v >= num_points:
                 u += 2
                 continue
             if u + 1 >= neighbor_len:
                 break
+            # horizontal distance to neighbor
             run = neighbors[u + 1]
+            # radius of neighbor
             dest_rad = pol_coords[v][2]
+            # change in vertical distance
             rise = dest_rad - source_rad
 
+            # calculate the change in slope angle
             angle_rad = math.atan2(abs(rise), run)
             angle_deg = math.degrees(angle_rad)
 
+            # if the slope is too steep, then make node untraversable
             if angle_deg > max_angle:
                 if neighbors[u] != -1:
                     removed += 1
+                # change the neighbor index and distance to -1 to show that it can't be traversed
                 adjalist[i][u] = -1
                 adjalist[i][u + 1] = -1
             u += 2
 
+    # write these new values for index and distance back into a CSV file
     f = "Mars/MarsAdjaListLR10N20S10.csv"
     with open(f, "w", newline="") as file:
         writer = csv.writer(file)
@@ -50,6 +62,7 @@ def slope_limit(max_angle=10.0):
 
     return removed
 
+# testing to see if the correct amount of edges are being removed
 before = sum(1 for row in adjalist for i in range(0, len(row), 2) if row[i] >= 0)
 removed = slope_limit(10.0)
 after = sum(1 for row in adjalist for i in range(0, len(row), 2) if row[i] >= 0)
