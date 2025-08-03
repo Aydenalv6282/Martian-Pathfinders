@@ -1,7 +1,7 @@
 # Martian Pathfinders
 ## Running the Project
 ### Starting
-Ensure that in the same folder as the executable, you also have a folder named "Mars" with the csv files containing all the relevant data. The window may take 20-30 seconds to appear, since many gigabytes of data need to be loaded into RAM. Once started, you should see this:
+Ensure that in the same folder as the executable, you also the folders named "Mars", "elements", and "output" with the csv files containing all the relevant data. The window may take 20-30 seconds to appear, since many gigabytes of data need to be loaded into RAM. Once started, you should see this:
 
 ![](https://github.com/Aydenalv6282/Martian-Pathfinders/blob/main/other_images/MP_Start.png)
 
