@@ -104,26 +104,35 @@ def Dijkstras(starting_index,ending_index,adjalist,pol_coords): # Sam
     prev = np.full(shape=num_points, fill_value=-1, dtype=np.int64)
     visited = np.full(shape=num_points, fill_value=0, dtype=np.bool)
 
+    # priority queue that stores (current_dist, node) and has the source node already in it
     pq = [(0, starting_index)]
 
     while pq:
         current_dist, u = heapq.heappop(pq)
+        # if node already has been processed, then skipped
         if visited[u]:
             continue
         visited[u] = True
 
+        # end if reach target node
         if u == ending_index:
             break
 
         neighbors = adjalist[u]
+        # iterate over the neighbor list
         for i in range(0, len(adjalist[u]), 2):
             v = neighbors[i]
             w = neighbors[i + 1]
+            # if better path to v is found, then update it
             if current_dist + w < next[v]:
+                # update the distance
                 next[v] = current_dist + w
+                # record the predecessor of the current node
                 prev[v] = u
+                # push updated values
                 heapq.heappush(pq, (current_dist + w, v))
     print("Done pathfinding!")
+    # reconstruct the path
     path = []
     node = ending_index
     while node != starting_index:
