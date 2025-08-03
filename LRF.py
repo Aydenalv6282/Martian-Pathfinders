@@ -1,4 +1,5 @@
 # Lower Resolution of File
+# Only 1/lrf points would be saved to a new file. This is to reduce runtime and the workload on RAM.
 
 import csv
 import random

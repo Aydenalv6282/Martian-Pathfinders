@@ -1,4 +1,5 @@
 # Counts points in file
+# This was used to make sure all data points were downloaded.
 
 import csv
 

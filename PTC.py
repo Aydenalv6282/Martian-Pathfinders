@@ -12,6 +12,8 @@ with open(source_path, "r") as mdatap:
         reader = csv.reader(mdatap)
         writer = csv.writer(mdatac)
         for line in reader:
+            # Read the polar coordinates, use these formulas to transform into cartesian points.
+            # This was used to confirm that we have a full sphere, and for Astar's heuristic.
             rho = float(line[2])
             lon = np.deg2rad(float(line[0]))
             lat = np.deg2rad(float(line[1]))

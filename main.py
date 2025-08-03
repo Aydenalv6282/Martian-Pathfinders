@@ -1,11 +1,8 @@
 import pygame
 import numpy as np
-from pygame.examples.cursors import image
 import sys
 import Algos
-import MapGenerator
 from MapGenerator import MapGen, PointmapGen
-import PlanetViewer
 from PlanetViewer import planet
 
 

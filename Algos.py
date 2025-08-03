@@ -1,20 +1,9 @@
 import numpy as np
-import math
 import heapq
 
-# You can ignore all code here up until line 39.
-
-# source_path_1 = "Mars/MarsAdjaListLR100N20.csv" # Source Path for the Adjacency List
-# source_path_2 = "Mars/MarsPolarLR100.csv" # Source Path for Polar Coordinates
-# source_path_3 = "Mars/MarsCartesianLR100.csv"
-
-# The starting and ending points are stored in arrays of size 2.
-# We look through the polar coordinates and save the closest pair of coordinates.
-
-# starting_point = np.array([np.float64(input("Enter starting longitude: ")), np.float64(input("Enter starting latitude: "))])
-# ending_point = np.array([np.float64(input("Enter ending longitude: ")), np.float64(input("Enter ending latitude: "))])
-
 def point_finder(starting_point,ending_point,pol_coords):
+    # This function loops through the file of polar coordinates and picks a starting/ending coordinate based on
+    # the minimum Euclidean distance to the user-entered coordinates.
     starting_index = 0
     min_starting_distance = np.inf
     ending_index = 0
@@ -26,7 +15,7 @@ def point_finder(starting_point,ending_point,pol_coords):
         if (int(starting_point[0]) != int(pol_coords[i][0]) or int(starting_point[1]) != int(pol_coords[i][1])) and (int(ending_point[0]) != int(pol_coords[i][0]) or int(ending_point[1]) != int(pol_coords[i][1])):
            continue
         check_coords = np.array([pol_coords[i][0], pol_coords[i][1]])
-        new_start_distance = np.linalg.norm(check_coords - starting_point)
+        new_start_distance = np.linalg.norm(check_coords - starting_point) # A more efficient way to calculate Euclidean distance.
         new_end_distance = np.linalg.norm(check_coords - ending_point)
         if new_start_distance < min_starting_distance:
             starting_index = i
@@ -37,21 +26,11 @@ def point_finder(starting_point,ending_point,pol_coords):
 
     return starting_index, ending_index
 
-
-'''
-- When the pathfinding is done, write a list of all the indexes of the coordinates visited in order to a file.
-- Use the variables "starting_index" and "ending_index".
-- These are the index of the closest points to the entered value. They may not be exact.
-- adjalist[starting_index] is the starting position, same for ending.
-- Each index in adjalist has 8 elements. The first one is the closest neighbor, the second is the distance to the
-  closest neighbor, the third is the second closest neighbor, the fourth is the distance...
-- The pathfinding algorithms should minimize total distance traveled. No need to account for slope, we can modify
-  the file later in the project to add that in with no modifications to the pathfinding.
-'''
-
+# Calculate the Euclidean distance between 2 points.
 def euclidean(v,car_coords,ending_index):
     return np.linalg.norm(car_coords[v] - car_coords[ending_index])
 
+# Calculate the great-circle distance between 2 points.
 def great_circle(v,car_coords,ending_index):
     R = 3389000.0
 
@@ -60,23 +39,33 @@ def great_circle(v,car_coords,ending_index):
     return R * dsigma
 
 def AStar(starting_index,ending_index,adjalist,pol_coords,car_coords): # Evan
+    # Using numpy arrays minimizes RAM usage and speeds up the code.
     num_points = len(adjalist)
+    # Minimum total weights to travel to specified points.
     gs = np.zeros(num_points, dtype=np.int64)
+    # Heuristic scores for each point.
     fs = np.full(shape=num_points, fill_value=np.iinfo(np.int64).max, dtype=np.int64)
+    # Index (in pol_coords) of node previously accessed to get to this point.
     prev = np.full(shape=num_points, fill_value=-1, dtype=np.int64)
     visited = np.full(shape=num_points, fill_value=0, dtype=np.bool)
 
+    # A priority queue data structure to improve time complexity.
     pq = [(0, starting_index)]
 
+    # While the priority queue isn't empty...
     while pq:
+        # Pop the point with the minimum heuristic score.
         _, u = heapq.heappop(pq)
+        # Skip points already visited.
         if visited[u]:
             continue
         visited[u] = True
 
+        # Stop when the goal point is reached.
         if u == ending_index:
             break
 
+        # Loop through neighbors, determine heuristic score, update f, g values, and push relaxed neighbors into queue.
         neighbors = adjalist[u]
         for i in range(0, len(adjalist[u]), 2):
             v = neighbors[i]
@@ -91,6 +80,7 @@ def AStar(starting_index,ending_index,adjalist,pol_coords,car_coords): # Evan
     print("Done pathfinding!")
     path = []
     node = ending_index
+    # Find the most efficient path traversed and add it to the list "path". This will be used to draw the path.
     while node != starting_index:
         path.append((pol_coords[node][0], pol_coords[node][1]))
         node = prev[node]

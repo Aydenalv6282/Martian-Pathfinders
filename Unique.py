@@ -1,4 +1,5 @@
-# Makes sure all points are unique
+# This file was used to ensure that all downloaded points were unique.
+# We did not want to include any duplicates. This file took many hours to run.
 
 import csv
 
@@ -8,6 +9,7 @@ count = 0
 
 points = set()
 
+# Add all points to a set.
 with open(source_path, "r") as file:
     reader = csv.reader(file)
     for line in reader:
@@ -21,6 +23,7 @@ print(count)
 
 l_points = len(points)
 
+# Write the set to a new file.
 if l_points != count:
     count = 0
     with open(result_path, "w", newline="") as file:
