@@ -8,11 +8,15 @@ from PIL import Image
 import numpy
 
 # Source: https://github.com/saiduc/PyOpenGLobe/blob/master/globe.py
+# This code comes from the linked library! It was modified to work with our project.
+# Code from the library was recycled into functions that would work with our gui and display
+# images generated from our code
 
+"""
+Reads an image file and converts to a OpenGL-readable textID format
+"""
 def read_texture(filename):
-    """
-    Reads an image file and converts to a OpenGL-readable textID format
-    """
+
     img = Image.open(filename).convert("RGB")
     img_data = numpy.array(img, dtype=numpy.uint8)
 
@@ -29,12 +33,13 @@ def read_texture(filename):
                  img.size[0], img.size[1], 0, GL_RGB, GL_UNSIGNED_BYTE, img_data)
     return textID
 
-
+# This function takes in the argument of the file name that was generated and creates a new window
+# containing a 3d rendering of the Mars planet with the drawn path from Main
 def planet(filename):
     pygame.init()
     display = (800, 800)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
-    pygame.display.set_caption('PyOpenGLob')
+    pygame.display.set_caption('Martian Pathfiners')
     pygame.key.set_repeat(1, 10)    # allows press and hold of buttons
     gluPerspective(40, (display[0]/display[1]), 0.1, 50.0)
     glTranslatef(0.0, 0.0, -5)    # sets initial zoom so we can see globe
