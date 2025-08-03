@@ -53,7 +53,8 @@ def planet(filename):
             # Exit cleanly if user quits window
             if event.type == pygame.QUIT:
                 pygame.quit()
-                quit()
+                pygame.display.quit()
+                return
 
             # Rotation with arrow keys
             if event.type == pygame.KEYDOWN:

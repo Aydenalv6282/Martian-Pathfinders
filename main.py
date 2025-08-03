@@ -263,4 +263,11 @@ while prompt_state:
     # Displays planet surface with drawn path
     if planet_state:
         planet("output/mars_path.png")
-        print(prompt_state)
+        pygame.init()
+        pygame.display.set_caption("Martian Pathfinders")
+        scale = 1
+        screen_width, screen_height = 1440, 820
+        screen = pygame.display.set_mode((screen_width, screen_height))
+        base_font = pygame.font.Font(None, 32)
+        b = pygame.image.load("output/mars_path.png")
+        planet_state = False
