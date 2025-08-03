@@ -29,6 +29,7 @@ The center of the map is at 0° longitude. The bottom is -90° latitude, and the
 ## Demonstration Video
 
 ### Link
+https://youtu.be/6zAX3hvd2lE
 
 ### Notes
 The dataset used in the video contained over 50 million data points (50 million vertices, 1 billion edges). This is too much data to store online, so the available download has only 5 million points or 100 million edges. The full dataset has over 500 million vertices, but unfortunately we don't have a supercomputer, so the video couldn't cover that.
