@@ -32,7 +32,7 @@ def read_texture(filename):
 
 def planet(filename):
     pygame.init()
-    display = (400, 400)
+    display = (800, 800)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
     pygame.display.set_caption('PyOpenGLob')
     pygame.key.set_repeat(1, 10)    # allows press and hold of buttons
