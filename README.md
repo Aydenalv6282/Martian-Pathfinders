@@ -20,8 +20,7 @@ Notice that the path drawn isn't simply a straight line. This is because a strai
 ![](https://github.com/Aydenalv6282/Martian-Pathfinders/blob/main/other_images/topography.png)
 
 ### Start
-After pressing the "Start" button located on the bottom right of your screen, a new window will be displayed containing a 3 dimensional rendering of the planet Mars with the path displayed on the surface. Have fun exploring!
-
+After pressing the "Start" button located on the bottom right of your screen, a new window will be displayed containing a 3 dimensional rendering of the planet Mars with the path displayed on the surface. Closing this window will bring you back to the first window. Have fun exploring!
 
 ![](https://github.com/Aydenalv6282/Martian-Pathfinders/blob/main/other_images/Planet_showcase.gif)
 
