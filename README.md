@@ -1,9 +1,14 @@
 # Martian Pathfinders
 ## Demonstration Video
+
 ## Downloading the Project
+The essential files are MapGenerator.py, main.py, PlanetViewer.py, and Algos.py. Pygame, numpy, PyOpenGL, pillow, and matplotlib are all also required.
 ## Running the Project
 ### Starting
 Ensure that in the same folder as the executable, you also have a folder named "Mars" with the csv files containing all the relevant data. The window may take 20-30 seconds to appear, since many gigabytes of data need to be loaded into RAM. Once started, you should see this:
+
+or
+Once all essential files and libraries have been installed, run main.py
 
 ![](https://github.com/Aydenalv6282/Martian-Pathfinders/blob/main/other_images/MP_Start.png)
 
@@ -12,4 +17,12 @@ Once this screen is loaded in, you can begin typing in your coordinates. The fir
 
 ![](https://github.com/Aydenalv6282/Martian-Pathfinders/blob/main/other_images/Mars_Set_Points.png)
 
-The center of the map is at 0° longitude. The bottom is -90° latitude, and the top is 90° latitude. The left and right sides are 180°. Note that near the edges and 0° longitude, there are not many data points. So, pathfinding in these areas _will not yield accurate paths._ Loading the entire dataset to get around this is not feasible, as it would likely use more than 64 gigabytes of RAM.
+The center of the map is at 0° longitude. The bottom is -90° latitude, and the top is 90° latitude. The left and right sides are 180°. Note that near the edges and 0° longitude, there are not many data points. So, pathfinding in these areas _will not yield accurate paths._ Loading the entire dataset to get around this is not feasible, as it would likely use more than 64 gigabytes of RAM. Please note, crashes frequently occur for some Mac OS.
+
+### Choosing the Algorithm
+To choose the pathfinding algorithm you wish to execute behind the scenes, simply select the "Dijkstra" or "Astar" buttons on the bottom right. The selected algorithm will be used once the "Start" button is pressed.
+
+### Start
+![](https://github.com/Aydenalv6282/Martian-Pathfinders/blob/main/other_images/Planet_showcase.gif)
+
+After pressing the "Start" button located on the bottom right of your screen, a new window will be displayed containing a 3 dimensional rendering of the planet Mars with the path displayed on the surface. Have fun exploring!
