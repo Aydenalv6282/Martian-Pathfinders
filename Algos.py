@@ -2,9 +2,6 @@ import numpy as np
 import math
 import heapq
 
-
-
-
 # You can ignore all code here up until line 39.
 
 # source_path_1 = "Mars/MarsAdjaListLR100N20.csv" # Source Path for the Adjacency List
@@ -22,7 +19,6 @@ def point_finder(starting_point,ending_point,pol_coords):
     min_starting_distance = np.inf
     ending_index = 0
     min_ending_distance = np.inf
-
     num_points = len(pol_coords)
     for i in range(num_points):
         if i % 1000000 == 0:
@@ -55,14 +51,16 @@ def point_finder(starting_point,ending_point,pol_coords):
 
 def euclidean(v,car_coords,ending_index):
     return np.linalg.norm(car_coords[v] - car_coords[ending_index])
-def haversine(v,car_coords,ending_index):
+
+def great_circle(v,car_coords,ending_index):
     R = 3389000.0
 
     chord = euclidean(v,car_coords,ending_index)
     dsigma = 2*np.arcsin(chord/(2*R))
     return R * dsigma
+
 def AStar(starting_index,ending_index,adjalist,pol_coords,car_coords): # Evan
-    num_points = len(pol_coords)
+    num_points = len(adjalist)
     gs = np.zeros(num_points, dtype=np.int64)
     fs = np.full(shape=num_points, fill_value=np.iinfo(np.int64).max, dtype=np.int64)
     prev = np.full(shape=num_points, fill_value=-1, dtype=np.int64)
@@ -84,7 +82,7 @@ def AStar(starting_index,ending_index,adjalist,pol_coords,car_coords): # Evan
             v = neighbors[i]
             w = neighbors[i + 1]
             g = w + gs[u]
-            f = g + euclidean(v,car_coords,ending_index)
+            f = g + great_circle(v, car_coords, ending_index)
             if f < fs[v]:
                 gs[v] = g
                 fs[v] = f
@@ -101,10 +99,10 @@ def AStar(starting_index,ending_index,adjalist,pol_coords,car_coords): # Evan
 
 # Needs to take in starting and ending points, the adjacency list, and the polor coordinates
 def Dijkstras(starting_index,ending_index,adjalist,pol_coords): # Sam
-    num_points = len(pol_coords)
-    next = [math.inf] * num_points
-    prev = [-1] * num_points
-    visited = [False] * num_points
+    num_points = len(adjalist)
+    next = np.full(shape=num_points, fill_value=np.iinfo(np.int64).max, dtype=np.int64)
+    prev = np.full(shape=num_points, fill_value=-1, dtype=np.int64)
+    visited = np.full(shape=num_points, fill_value=0, dtype=np.bool)
 
     pq = [(0, starting_index)]
 
