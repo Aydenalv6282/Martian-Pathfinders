@@ -70,6 +70,9 @@ def AStar(starting_index,ending_index,adjalist,pol_coords,car_coords): # Evan
         for i in range(0, len(adjalist[u]), 2):
             v = neighbors[i]
             w = neighbors[i + 1]
+            # Ignore invalid slopes.
+            if v==-1 and w==-1:
+                continue
             g = w + gs[u]
             f = g + great_circle(v, car_coords, ending_index)
             if f < fs[v]:
@@ -113,6 +116,9 @@ def Dijkstras(starting_index,ending_index,adjalist,pol_coords): # Sam
         for i in range(0, len(adjalist[u]), 2):
             v = neighbors[i]
             w = neighbors[i + 1]
+            # Ignore invalid slopes.
+            if v==-1 and w==-1:
+                continue
             # if better path to v is found, then update it
             if current_dist + w < next[v]:
                 # update the distance
