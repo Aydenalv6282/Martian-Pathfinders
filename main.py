@@ -116,7 +116,7 @@ while prompt_state:
                 start_active = True
             if viewer_rect.collidepoint(event.pos):
                 viewer_active = True
-                prompt_state = False
+                planet_state = True
         if event.type == pygame.MOUSEBUTTONUP:
             # Finding the closest points in data set to where user enters
             if adjalist_active:
