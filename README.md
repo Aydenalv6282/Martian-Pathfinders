@@ -1,9 +1,14 @@
 # Martian Pathfinders
 ## Demonstration Video
+
 ## Downloading the Project
+The essential files are MapGenerator.py, main.py, PlanetViewer.py, and Algos.py. Pygame, numpy, PyOpenGL, pillow, and matplotlib are all also required.
 ## Running the Project
 ### Starting
 Ensure that in the same folder as the executable, you also have a folder named "Mars" with the csv files containing all the relevant data. The window may take 20-30 seconds to appear, since many gigabytes of data need to be loaded into RAM. Once started, you should see this:
+
+or
+Once all essential files and libraries have been installed, run main.py
 
 ![](https://github.com/Aydenalv6282/Martian-Pathfinders/blob/main/other_images/MP_Start.png)
 
@@ -19,4 +24,5 @@ To choose the pathfinding algorithm you wish to execute behind the scenes, simpl
 
 ### Start
 ![](https://github.com/Aydenalv6282/Martian-Pathfinders/blob/main/other_images/Planet_showcase.gif)
+
 After pressing the "Start" button located on the bottom right of your screen, a new window will be displayed containing a 3 dimensional rendering of the planet Mars with the path displayed on the surface. Have fun exploring!
